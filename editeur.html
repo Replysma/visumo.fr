@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Création - Studio</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Fira+Code:wght@500&family=Bangers&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --studio-black: #111111;
+            --studio-green: #2ecc71;
+            --text-gray: #8e8e93;
+            --border-color: #e5e5e5;
+            --gold: #ecc100;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f3f5;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar-studio {
+            width: 90px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 1000;
+        }
+
+        .nav-studio-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        .icon-squircle {
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f8f8f8;
+        }
+
+        .btn-plus-black {
+            background: var(--studio-black);
+        }
+
+        .nav-label-studio {
+            font-size: 10px;
+            margin-top: 6px;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        /* Editor View */
+        .view-studio {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .editor-toolbar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 65px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            z-index: 1000;
+        }
+
+        .tool-btn {
+            background: #f8f9fa;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: #eee;
+        }
+
+        /* Canvas */
+        .canvas-container {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #studio-canvas {
+            width: 800px;
+            height: 600px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Elements on Canvas */
+        .studio-element {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+        }
+
+        .studio-element.selected {
+            outline: 2px solid var(--gold);
+            outline-offset: 5px;
+        }
+
+        /* Properties Panel */
+        .properties-panel {
+            position: absolute;
+            right: 25px;
+            top: 100px;
+            width: 250px;
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            display: none;
+            z-index: 1001;
+        }
+
+        .prop-group {
+            margin-bottom: 20px;
+        }
+
+        .prop-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .prop-group select,
+        .prop-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .delete-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fff5f5;
+            color: #ff3b30;
+            border: 1px solid #ffebeb;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 75px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            padding: 10px;
+            min-width: 150px;
+        }
+
+        .dropdown-menu div {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .dropdown-menu div:hover {
+            background: #f8f9fa;
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="sidebar-studio">
+        <div class="nav-studio-item" onclick="document.getElementById('studio-file-input').click()">
+            <div class="icon-squircle btn-plus-black">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </div>
+            <span class="nav-label-studio">Importer</span>
+        </div>
+    </nav>
+
+    <input type="file" id="studio-file-input" style="display:none" accept="image/*" onchange="processFile(event)">
+
+    <section id="studio-editor" class="view-studio">
+        <div class="editor-toolbar">
+            <button onclick="addText()" class="tool-btn"><span>Texte</span></button>
+            <div style="position:relative;">
+                <button onclick="toggleShapeMenu()" class="tool-btn"><span>Formes</span></button>
+                <div id="shape-menu" class="dropdown-menu">
+                    <div onclick="addShape('square')">■ Carré</div>
+                    <div onclick="addShape('circle')">● Rond</div>
+                    <div onclick="addShape('triangle')">▲ Triangle</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div id="studio-canvas"></div>
+        </div>
+
+        <div id="properties-panel" class="properties-panel">
+            <div style="font-weight:800; margin-bottom:20px;">Personnalisation</div>
+            <div id="text-tools" style="display:none;" class="prop-group">
+                <label>Police</label>
+                <select onchange="updateStyle('fontFamily', this.value)">
+                    <option value="'Inter'">Inter</option>
+                    <option value="'Playfair Display'">Playfair</option>
+                    <option value="'Dancing Script'">Manuscrit</option>
+                </select>
+            </div>
+            <div class="prop-group">
+                <label>Couleur</label>
+                <input type="color" oninput="updateStyle('color', this.value); updateStyle('fill', this.value)">
+            </div>
+            <button onclick="deleteSelected()" class="delete-btn">Supprimer</button>
+        </div>
+    </section>
+
+    <script>
+        let selectedElement = null;
+        const canvas = document.getElementById('studio-canvas');
+
+        function toggleShapeMenu() {
+            const menu = document.getElementById('shape-menu');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function addText() {
+            const el = document.createElement('div');
+            el.className = 'studio-element text-obj';
+            el.style.left = '50px'; el.style.top = '50px';
+            el.style.fontSize = '32px';
+            el.contentEditable = true;
+            el.innerText = 'Nouveau texte';
+            initElement(el);
+        }
+
+        function addShape(type) {
+            const el = document.createElement('div');
+            el.className = 'studio-element shape-obj';
+            el.style.width = '100px'; el.style.height = '100px';
+            el.style.left = '100px'; el.style.top = '100px';
+            el.style.color = '#ecc100';
+
+            let svg = '';
+            if (type === 'square') svg = '<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="currentColor"/></svg>';
+            if (type === 'circle') svg = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="currentColor"/></svg>';
+            if (type === 'triangle') svg = '<svg viewBox="0 0 100 100"><polygon points="50,0 100,100 0,100" fill="currentColor"/></svg>';
+
+            el.innerHTML = svg;
+            initElement(el);
+            toggleShapeMenu();
+        }
+
+        function processFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'studio-element';
+                    div.innerHTML = `<img src="${e.target.result}" style="max-width:200px; pointer-events:none;">`;
+                    initElement(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function initElement(el) {
+            canvas.appendChild(el);
+            makeDraggable(el);
+            el.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                selectElement(el);
+            });
+        }
+
+        function selectElement(el) {
+            if (selectedElement) selectedElement.classList.remove('selected');
+            selectedElement = el;
+            selectedElement.classList.add('selected');
+            document.getElementById('properties-panel').style.display = 'block';
+            document.getElementById('text-tools').style.display = el.classList.contains('text-obj') ? 'block' : 'none';
+        }
+
+        function updateStyle(prop, val) { if (selectedElement) selectedElement.style[prop] = val; }
+
+        function deleteSelected() {
+            if (selectedElement) {
+                selectedElement.remove();
+                document.getElementById('properties-panel').style.display = 'none';
+            }
+        }
+
+        function makeDraggable(el) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            el.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                if (el.contentEditable === "true" && document.activeElement === el) return;
+                e.preventDefault();
+                pos3 = e.clientX; pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+                pos3 = e.clientX; pos4 = e.clientY;
+                el.style.top = (el.offsetTop - pos2) + "px";
+                el.style.left = (el.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        canvas.addEventListener('mousedown', () => {
+            if (selectedElement) selectedElement.classList.remove('selected');
+            selectedElement = null;
+            document.getElementById('properties-panel').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

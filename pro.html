@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-white: #ffffff;
+            --pro-green: hsl(51, 100%, 50%);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-white);
+            margin: 0;
+            padding: 50px 20px;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .pricing-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 40px;
+            width: 300px;
+            text-align: center;
+            border: 1px solid #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            box-shadow: 10px 10px 20px var(--shadow-color);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--pro-green);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pro-green);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .features li {
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .check {
+            color: var(--pro-green);
+            margin-right: 10px;
+            font-style: normal;
+        }
+
+        .btn-pro,
+        .btn-secondary {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-pro {
+            background-color: var(--text-white);
+            color: #000;
+            box-shadow: 4px 4px 0px var(--pro-green);
+        }
+
+        .btn-pro:hover {
+            background-color: var(--pro-green);
+            box-shadow: 0px 0px 0px var(--pro-green);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-white);
+            border: 1px solid #555;
+        }
+
+        .btn-secondary:hover {
+            background-color: #333;
+        }
+
+        /* Minimal transparent back button adapted to dark theme (top-left) */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: transparent;
+            color: #fff;
+            /* light text for dark background */
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: none;
+            transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease, border-color 0.18s ease;
+            z-index: 999;
+        }
+
+        .back-button svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+        .back-button:hover {
+            /* Au survol : fond clair et texte noir pour contraste (effet "dark" sur le texte) */
+            background: rgba(255, 255, 255, 0.95);
+            color: #111;
+            transform: translateY(-1px);
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button:focus {
+            outline: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        @media (max-width: 480px) {
+            .back-button {
+                top: 12px;
+                left: 12px;
+                padding: 8px;
+            }
+
+            .back-button .label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-button" aria-label="Retour à l'accueil">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H6" />
+            <path d="M12 19L5 12l7-7" />
+        </svg>
+        <span class="label">Retour</span>
+    </a>
+
+    <div class="pricing-header">
+        <h2>Tarifs</h2>
+        <p>Choisissez le plan qui vous convient</p>
+    </div>
+
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Visumo Standard</h3>
+            <div class="price">GRATUIT<span></span></div>
+            <ul class="features">
+                <li><span class="check">✓</span>5 Projets</li>
+                <li><span class="check">✓</span>Basic Support</li>
+                <li><span class="check">✓</span>1GB Storage</li>
+            </ul>
+            <a href="#" class="btn-secondary">Suivant</a>
+        </div>
+
+        <div class="pricing-card">
+            <h3>Visumo Intermédiaire</h3>
+            <div class="price">5,99€<span>/mois</span></div>
+            <ul class="features">
+                <li><span class="check">✓</span>20 Projets</li>
+                <li><span class="check">✓</span>Support Standard</li>
+                <li><span class="check">✓</span>20GB Stockage</li>
+            </ul>
+            <a href="https://buy.stripe.com/7sY4gr0HBfRRcw2dj573G04" class="btn-pro">S'abonner maintenant</a>
+        </div>
+
+        <div class="pricing-card featured">
+            <span class="badge">PLUS POPULAIRE</span>
+            <h3>Visumo Pro</h3>
+            <div class="price">10,00€<span>/mois</span></div>
+            <ul class="features">
+                <li><span class="check">✓</span>Unlimited Projects</li>
+                <li><span class="check">✓</span>Priority Support</li>
+                <li><span class="check">✓</span>100GB Stockage</li>
+                <li><span class="check">✓</span>Advanced Analytics</li>
+            </ul>
+            <a href="https://buy.stripe.com/bJecMX75ZdJJ53A3Iv73G02" class="btn-pro">Essayer gratuitement</a>
+        </div>
+
+        <div class="pricing-card">
+            <h3>Visumo Expert</h3>
+            <div class="price">19,99€<span>/mois</span></div>
+            <ul class="features">
+                <li><span class="check">✓</span>Tout en illimité</li>
+                <li><span class="check">✓</span>24/7 Support</li>
+                <li><span class="check">✓</span>Unlimited Storage</li>
+                <li><span class="check">✓</span>Custom Integration</li>
+            </ul>
+            <a href="https://buy.stripe.com/4gMbIT9e7fRRcw21An73G03" class="btn-pro">S'abonner maintenant</a>
+        </div>
+    </div>
+</body>
+
+</html>

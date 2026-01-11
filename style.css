@@ -1,0 +1,93 @@
+.pro-button {
+    /* Positionnement */
+    position: absolute;
+    /* Reste en haut de la page */
+    top: 50px;
+    /* Espacement du haut */
+    right: 10px;
+    /* Espacement de la droite */
+
+    /* Style du bouton */
+    display: inline-block;
+    transition: transform 0.3s ease;
+    /* Animation fluide au survol */
+    z-index: 1000;
+    /* S'assure que le bouton est au-dessus des autres éléments */
+}
+
+.pro-button img {
+    width: 100px;
+    /* Ajustez la taille selon vos besoins */
+    height: auto;
+    cursor: pointer;
+}
+
+/* Effet au survol (optionnel mais recommandé) */
+.pro-button:hover {
+    transform: scale(0.1);
+    /* Grossit légèrement l'image au survol */
+}
+
+/* --- SECTION : FENÊTRE DE CHOIX DE FORMAT --- */
+.format-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    /* Fond noir transparent */
+    display: none;
+    /* Caché par défaut */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    /* Toujours au-dessus */
+}
+
+.format-modal.active {
+    display: flex;
+    /* S'affiche quand on ajoute la classe 'active' */
+}
+
+.format-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.format-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.format-option {
+    padding: 15px;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.format-option:hover {
+    border-color: #2ecc71;
+    /* Vert Studio */
+    transform: scale(1.08);
+    background-color: #f9f9f9;
+}
+
+.format-option h3 {
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: #111;
+}
+
+.format-option p {
+    font-size: 10px;
+    color: #888;
+}

@@ -1,0 +1,174 @@
+:root {
+    --bg-black: #0a0a0a;
+    --card-dark: #161616;
+    --neon-green: #4ade80;
+    /* Le vert de vos checkmarks et badges */
+    --text-main: #ffffff;
+    --text-muted: #86868b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-black);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Lueur d'ambiance verte */
+.glow-bg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.07) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: -1;
+}
+
+/* Header & Logo Pro */
+.main-header {
+    padding: 20px 40px;
+}
+
+.nav-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--neon-green);
+}
+
+.pro-access img {
+    height: 50px;
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.3));
+}
+
+.pro-access:hover img {
+    transform: scale(1.1) translateY(-2px);
+    filter: drop-shadow(0 0 15px var(--neon-green));
+}
+
+/* Espace Central (La Croix) */
+.editor-space {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.interaction-zone {
+    text-align: center;
+}
+
+.add-button {
+    background: var(--card-dark);
+    border: 1px solid #333;
+    width: 90px;
+    height: 90px;
+    border-radius: 28px;
+    /* Style Apple Squircle */
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+}
+
+.cross {
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
+
+.cross::before,
+.cross::after {
+    content: "";
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: background 0.3s;
+}
+
+.cross::before {
+    width: 2px;
+    height: 100%;
+}
+
+/* Barre verticale */
+.cross::after {
+    width: 100%;
+    height: 2px;
+}
+
+/* Barre horizontale */
+
+.add-button:hover {
+    background: #222;
+    border-color: var(--neon-green);
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.add-button:hover .cross::before,
+.add-button:hover .cross::after {
+    background: var(--neon-green);
+}
+
+.instruction {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+/* Footer UI */
+.bottom-ui {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.status-bar {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--neon-green);
+}

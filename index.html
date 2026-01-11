@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Interface Studio - Version Finale Parfaite</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Montserrat:wght@700&family=Lora:ital@1&family=Pacifico&family=Permanent+Marker&family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Bangers&family=Fira+Code:wght@500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --studio-black: #111111;
+            --studio-green: #2ecc71;
+            --text-gray: #8e8e93;
+            --border-color: #e5e5e5;
+            --gold: #ecc100;
+            --sidebar-width: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f3f5;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* --- BARRE HAUT (PRO & USER) --- */
+        .pro-badge-top {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid var(--gold);
+            padding: 8px 18px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            z-index: 10002;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        .pro-badge-top:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .pro-tag {
+            background: var(--gold);
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .pro-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .user-top-bar {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-btn-minimal {
+            background: white;
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--gold);
+            color: white;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(236, 193, 0, 0.3);
+        }
+
+        /* --- SIDEBAR (Disposition Originale) --- */
+        .sidebar-studio {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 0;
+            z-index: 10000;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .nav-studio-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 30px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .icon-squircle {
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f8f9fa;
+            transition: 0.3s;
+        }
+
+        .btn-plus-black {
+            background: var(--studio-black);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-studio-item:hover .icon-squircle {
+            transform: scale(1.1);
+        }
+
+        .nav-label-studio {
+            font-size: 10px;
+            margin-top: 8px;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        /* --- PANNEAU PROJETS --- */
+        .panel-coulissant {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            width: 350px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            z-index: 9999;
+            transform: translateX(-105%);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 35px;
+        }
+
+        .panel-coulissant.active {
+            transform: translateX(0);
+        }
+
+        /* --- VUES --- */
+        .view-studio {
+            position: fixed;
+            left: var(--sidebar-width);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            background: #f3f3f5;
+        }
+
+        .view-active {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Accueil Central */
+        .home-center-trigger {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .big-plus-btn {
+            width: 85px;
+            height: 85px;
+            background: var(--studio-black);
+            border-radius: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: 0.4s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-center-trigger:hover .big-plus-btn {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* --- ÉDITEUR & CANVAS --- */
+        #studio-canvas {
+            width: 800px;
+            height: 600px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+            padding: 40px;
+        }
+
+        .studio-element {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+        }
+
+        .studio-element.selected {
+            outline: 2px solid var(--gold);
+            outline-offset: 5px;
+        }
+
+        /* Poignées de redimensionnement */
+        .resizer {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border: 2px solid var(--gold);
+            position: absolute;
+            z-index: 10;
+        }
+
+        .resizer.nw {
+            top: -10px;
+            left: -10px;
+            cursor: nw-resize;
+        }
+
+        .resizer.ne {
+            top: -10px;
+            right: -10px;
+            cursor: ne-resize;
+        }
+
+        .resizer.sw {
+            bottom: -10px;
+            left: -10px;
+            cursor: sw-resize;
+        }
+
+        .resizer.se {
+            bottom: -10px;
+            right: -10px;
+            cursor: se-resize;
+        }
+
+        .resizer.n {
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: n-resize;
+        }
+
+        .resizer.s {
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: s-resize;
+        }
+
+        .resizer.e {
+            top: 50%;
+            right: -10px;
+            transform: translateY(-50%);
+            cursor: e-resize;
+        }
+
+        .resizer.w {
+            top: 50%;
+            left: -10px;
+            transform: translateY(-50%);
+            cursor: w-resize;
+        }
+
+        .studio-element.text-obj {
+            cursor: text;
+            min-width: 50px;
+            outline: none;
+        }
+
+        /* Toolbar */
+        .editor-toolbar {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            height: 65px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            z-index: 1001;
+        }
+
+        .tool-btn {
+            background: #f8f9fa;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: #eee;
+        }
+
+        .create-btn {
+            background: var(--studio-black);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Panneau Propriétés */
+        .properties-panel {
+            position: absolute;
+            right: 25px;
+            top: 110px;
+            width: 260px;
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            display: none;
+            z-index: 1002;
+        }
+
+        .prop-group {
+            margin-bottom: 22px;
+        }
+
+        .prop-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: #bbb;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .prop-group select,
+        .prop-group input[type="range"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 75px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            padding: 10px;
+            min-width: 160px;
+            z-index: 1100;
+        }
+
+        .dropdown-menu div {
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .dropdown-menu div:hover {
+            background: #f8f9fa;
+            color: var(--gold);
+        }
+
+        /* MODALS (Firebase) */
+        .auth-overlay,
+        .info-panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+        }
+
+        .auth-card,
+        .info-card {
+            background: white;
+            width: 420px;
+            padding: 45px;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .minimal-input {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 18px;
+            border: 1px solid #f0f0f0;
+            background: #fdfdfd;
+            outline: none;
+        }
+
+        .gold-submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--gold);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* RESPONSIVE TABLETTE/MOBILE */
+        @media (max-width: 1024px) {
+            #studio-canvas {
+                transform: scale(0.85);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #studio-canvas {
+                transform: scale(0.45);
+            }
+
+            .sidebar-studio {
+                width: 70px;
+            }
+
+            .view-studio {
+                left: 70px;
+            }
+
+            .panel-coulissant {
+                left: 70px;
+                width: 280px;
+            }
+
+            .editor-toolbar {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 10px;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="pro-badge-top" onclick="window.location.href='pro.html'">
+        <span class="pro-tag">PRO</span>
+        <span class="pro-text">Découvrir les plans</span>
+    </div>
+
+    <div class="user-top-bar">
+        <div id="auth-trigger" onclick="toggleAuthModal(true)" class="login-btn-minimal">Connexion</div>
+        <div id="user-profile-circle" onclick="toggleProfilePanel(true)" class="profile-avatar"><span
+                id="user-initials">U</span></div>
+    </div>
+
+    <input type="file" id="studio-file-input" style="display:none" accept="image/*" onchange="processStudioFile(event)">
+
+    <nav class="sidebar-studio">
+        <div style="width:8px; height:8px; background:var(--studio-green); border-radius:50%; margin-bottom:30px;">
+        </div>
+
+        <div class="nav-studio-item" onclick="triggerStudioUpload()">
+            <div class="icon-squircle btn-plus-black">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </div>
+            <span class="nav-label-studio">Créer</span>
+        </div>
+
+        <div class="nav-studio-item" onclick="showStudioHome()">
+            <div class="icon-squircle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                </svg>
+            </div>
+            <span class="nav-label-studio">Accueil</span>
+        </div>
+
+        <div class="nav-studio-item" id="btn-projets">
+            <div class="icon-squircle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <span class="nav-label-studio">Projets</span>
+        </div>
+
+        <div class="nav-studio-item" onclick="handleAccountBtnClick()" style="margin-top:auto; margin-bottom:20px;">
+            <div class="icon-squircle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <span class="nav-label-studio">Compte</span>
+        </div>
+    </nav>
+
+    <div id="panel-projets" class="panel-coulissant">
+        <h2 style="font-weight:700; margin-bottom:20px;">Mes Projets</h2>
+        <p style="color:var(--text-gray); font-size:14px;">Aucun projet récent sauvegardé.</p>
+    </div>
+
+    <div id="auth-modal" class="auth-overlay">
+        <div class="auth-card">
+            <h2 id="auth-title">Créer un compte</h2>
+            <form id="auth-form" style="margin-top:20px;">
+                <input name="displayName" type="text" placeholder="Nom d'utilisateur" class="minimal-input"
+                    id="auth-name-input">
+                <input name="email" type="email" placeholder="Email" class="minimal-input" required>
+                <input name="password" type="password" placeholder="Mot de passe" class="minimal-input" required>
+                <button type="submit" class="gold-submit-btn" id="auth-submit-btn">Continuer</button>
+            </form>
+            <p style="margin-top:20px; font-size:13px;">Déjà inscrit ? <a href="javascript:void(0)"
+                    onclick="switchAuthMode()" style="color:var(--gold); font-weight:700;">Se connecter</a></p>
+            <button onclick="toggleAuthModal(false)"
+                style="margin-top:20px; border:none; background:none; color:gray; cursor:pointer;">Annuler</button>
+        </div>
+    </div>
+
+    <div id="profile-panel" class="info-panel-overlay">
+        <div class="info-card">
+            <div style="width:80px; height:80px; background:var(--gold); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:30px; font-weight:800;"
+                id="profile-big-initials">U</div>
+            <h2 id="profile-pseudo">Utilisateur</h2>
+            <p id="profile-email" style="color:gray;">email@exemple.com</p>
+            <button onclick="handleLogout()"
+                style="margin-top:30px; width:100%; padding:15px; border-radius:18px; border:1px solid #eee; color:red; cursor:pointer; font-weight:700;">Déconnexion</button>
+            <button onclick="toggleProfilePanel(false)"
+                style="margin-top:10px; border:none; background:none; cursor:pointer;">Fermer</button>
+        </div>
+    </div>
+
+    <section id="studio-home" class="view-studio view-active">
+        <button id="btn-create" class="create-btn" aria-label="Créer un nouveau projet" onclick="createBlankDesign()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Créer un design</span>
+        </button>
+        <div class="home-center-trigger" onclick="triggerStudioUpload()">
+            <div class="big-plus-btn">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </div>
+            <p style="color:var(--text-gray); font-weight:500;">Cliquez pour importer et ouvrir l'éditeur</p>
+        </div>
+    </section>
+
+    <section id="studio-editor" class="view-studio">
+        <div class="editor-toolbar">
+            <button onclick="showStudioHome()" class="tool-btn">← Retour</button>
+            <button onclick="addText()" class="tool-btn">Texte</button>
+            <button onclick="triggerStudioUpload()" class="tool-btn">Importez une image</button>
+            <div style="position:relative;">
+                <button onclick="toggleShapeMenu()" class="tool-btn">Formes</button>
+                <div id="shape-menu" class="dropdown-menu">
+                    <div onclick="addShape('square')">■ Carré</div>
+                    <div onclick="addShape('circle')">● Rond</div>
+                    <div onclick="addShape('triangle')">▲ Triangle</div>
+                    <div onclick="addShape('heart')">♥ Cœur</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div id="studio-canvas"></div>
+        </div>
+
+        <div id="properties-panel" class="properties-panel">
+            <div class="prop-group">
+                <label>Dimensions / Échelle</label>
+                <input type="range" id="size-slider" min="10" max="600" value="100" oninput="updateSize(this.value)">
+            </div>
+            <div class="prop-group" id="text-tools" style="display:none;">
+                <label>Police</label>
+                <select id="font-select" onchange="updateStyle('fontFamily', this.value)">
+                    <option value="'Inter'">Inter</option>
+                    <option value="'Montserrat'">Montserrat</option>
+                    <option value="'Pacifico'">Pacifico</option>
+                    <option value="'Lora'">Lora</option>
+                    <option value="'Permanent Marker'">Permanent Marker</option>
+                </select>
+            </div>
+            <div class="prop-group">
+                <label>Couleur</label>
+                <input type="color" oninput="updateStyle('color', this.value); updateStyle('fill', this.value)">
+            </div>
+
+            <!-- Nouveaux Effets -->
+            <div class="prop-group">
+                <label>Opacité</label>
+                <input type="range" id="opacity-slider" min="0" max="1" step="0.1" value="1"
+                    oninput="updateStyle('opacity', this.value)">
+            </div>
+
+            <div class="prop-group">
+                <label>Rotation</label>
+                <input type="range" id="rotation-slider" min="0" max="360" value="0"
+                    oninput="updateRotation(this.value)">
+            </div>
+
+            <div class="prop-group">
+                <label>Bordure (Largeur)</label>
+                <input type="range" id="border-width-slider" min="0" max="20" value="0"
+                    oninput="updateStyle('borderWidth', this.value + 'px'); updateStyle('borderStyle', 'solid')">
+            </div>
+
+            <div class="prop-group">
+                <label>Ombre Portée / Néon</label>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                    <input type="color" id="shadow-color" value="#000000" oninput="updateShadow()">
+                    <input type="range" id="shadow-blur" min="0" max="50" value="0" oninput="updateShadow()"
+                        title="Flou">
+                </div>
+                <div style="display: flex; gap: 5px; margin-top: 5px;">
+                    <input type="range" id="shadow-x" min="-20" max="20" value="0" oninput="updateShadow()"
+                        title="Offset X">
+                    <input type="range" id="shadow-y" min="-20" max="20" value="0" oninput="updateShadow()"
+                        title="Offset Y">
+                </div>
+                <p style="font-size: 10px; color: gray; margin-top: 5px;">Utilisez le flou élevé sans décalage pour un
+                    effet néon.</p>
+            </div>
+
+            <button onclick="deleteSelected()" class="delete-btn">Supprimer l'élément</button>
+        </div>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyBfSXNF_mixOqLMElf_MTbDDylsYd7UA74", authDomain: "sirte-419b1.firebaseapp.com", projectId: "sirte-419b1", storageBucket: "sirte-419b1.firebasestorage.app", messagingSenderId: "1040503212686", appId: "1:1040503212686:web:4a69d19e7a26c06f5017df" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-trigger').style.display = 'none';
+                document.getElementById('user-profile-circle').style.display = 'flex';
+                const initial = (user.displayName || user.email).charAt(0).toUpperCase();
+                document.getElementById('user-initials').innerText = initial;
+                document.getElementById('profile-big-initials').innerText = initial;
+                document.getElementById('profile-pseudo').innerText = user.displayName || 'Utilisateur';
+                document.getElementById('profile-email').innerText = user.email;
+                toggleAuthModal(false);
+            } else {
+                document.getElementById('auth-trigger').style.display = 'block';
+                document.getElementById('user-profile-circle').style.display = 'none';
+            }
+        });
+
+        document.getElementById('auth-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = e.target.email.value, password = e.target.password.value, name = e.target.displayName.value;
+            try {
+                if (document.getElementById('auth-title').innerText === 'Se connecter') {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    const res = await createUserWithEmailAndPassword(auth, email, password);
+                    await updateProfile(res.user, { displayName: name });
+                }
+            } catch (err) { alert(err.message); }
+        };
+        window.handleLogout = () => signOut(auth).then(() => toggleProfilePanel(false));
+    </script>
+
+    <script>
+        let selectedElement = null;
+        const canvas = document.getElementById('studio-canvas');
+
+        // NAVIGATION
+        function toggleAuthModal(s) { document.getElementById('auth-modal').style.display = s ? 'flex' : 'none'; }
+        function toggleProfilePanel(s) { document.getElementById('profile-panel').style.display = s ? 'flex' : 'none'; }
+        function handleAccountBtnClick() {
+            if (document.getElementById('user-profile-circle').style.display === 'flex') toggleProfilePanel(true);
+            else toggleAuthModal(true);
+        }
+        function switchAuthMode() {
+            const isL = document.getElementById('auth-title').innerText === 'Se connecter';
+            document.getElementById('auth-title').innerText = isL ? 'Créer un compte' : 'Se connecter';
+            document.getElementById('auth-submit-btn').innerText = isL ? 'Continuer' : 'Se connecter';
+            document.getElementById('auth-name-input').style.display = isL ? 'block' : 'none';
+        }
+
+        function triggerStudioUpload() { document.getElementById('studio-file-input').click(); }
+        function showStudioHome(clearCanvas = false) {
+            document.getElementById('studio-editor').classList.remove('view-active');
+            document.getElementById('studio-home').classList.add('view-active');
+            if (clearCanvas) {
+                canvas.innerHTML = ''; // Vide le canevas
+                document.getElementById('properties-panel').style.display = 'none'; // Cache le panneau de propriétés
+                selectedElement = null; // Désélectionne tout élément
+            }
+        }
+        function toggleShapeMenu() { const m = document.getElementById('shape-menu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
+
+        function createBlankDesign() {
+            document.getElementById('studio-home').classList.remove('view-active');
+            document.getElementById('studio-editor').classList.add('view-active');
+            canvas.innerHTML = ''; // S'assure que le canevas est vide pour un nouveau design
+            document.getElementById('properties-panel').style.display = 'none'; // Cache le panneau de propriétés
+            selectedElement = null; // Désélectionne tout élément
+        }
+
+        document.getElementById('btn-projets').onclick = (e) => {
+            e.stopPropagation();
+            document.getElementById('panel-projets').classList.toggle('active');
+        };
+        document.addEventListener('click', () => document.getElementById('panel-projets').classList.remove('active'));
+
+        // ÉDITION
+        function processStudioFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('studio-home').classList.remove('view-active');
+                    document.getElementById('studio-editor').classList.add('view-active');
+                    const div = document.createElement('div');
+                    div.className = 'studio-element';
+                    div.innerHTML = `<img src="${e.target.result}" style="width:250px; pointer-events:none;">`;
+                    initDesignElement(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addText() {
+            const el = document.createElement('div');
+            el.className = 'studio-element text-obj';
+            el.style.left = '100px'; el.style.top = '100px';
+            el.style.fontSize = '40px'; el.style.fontWeight = '700';
+            el.contentEditable = true;
+            el.innerText = 'Nouveau texte';
+            initDesignElement(el);
+        }
+
+        function addShape(type) {
+            const el = document.createElement('div');
+            el.className = 'studio-element shape-obj';
+            el.style.width = '120px'; el.style.height = '120px';
+            el.style.left = '150px'; el.style.top = '150px';
+            el.style.color = '#ecc100';
+
+            let svg = '';
+            if (type === 'square') svg = '<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="currentColor"/></svg>';
+            if (type === 'circle') svg = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="currentColor"/></svg>';
+            if (type === 'triangle') svg = '<svg viewBox="0 0 100 100"><polygon points="50,0 100,100 0,100" fill="currentColor"/></svg>';
+            if (type === 'heart') svg = '<svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 28.5L14.1 26.8C7.1 20.6 2.5 16.4 2.5 11.3C2.5 7.1 5.8 3.8 10 3.8C12.4 3.8 14.7 4.9 16.2 6.7C17.7 4.9 20 3.8 22.4 3.8C26.6 3.8 29.9 7.1 29.9 11.3C29.9 16.4 25.3 20.6 18.3 26.8L16 28.5Z"/></svg>';
+
+            el.innerHTML = svg;
+            initDesignElement(el);
+            toggleShapeMenu();
+        }
+
+        function initDesignElement(el) {
+            canvas.appendChild(el);
+            makeDraggable(el);
+            el.addEventListener('mousedown', (e) => { e.stopPropagation(); selectElement(el); });
+            el.addEventListener('touchstart', (e) => { e.stopPropagation(); selectElement(el); }, { passive: false });
+        }
+
+        function selectElement(el) {
+            if (selectedElement) {
+                selectedElement.classList.remove('selected');
+                removeResizers(selectedElement);
+            }
+            selectedElement = el;
+            selectedElement.classList.add('selected');
+            addResizers(selectedElement);
+
+            document.getElementById('properties-panel').style.display = 'block';
+            const isT = el.classList.contains('text-obj');
+            document.getElementById('text-tools').style.display = isT ? 'block' : 'none';
+
+            // Charger les valeurs actuelles dans les curseurs
+            document.getElementById('size-slider').value = isT ? parseInt(el.style.fontSize) : (parseInt(el.style.width) || 250);
+            document.getElementById('opacity-slider').value = el.style.opacity || 1;
+
+            // Rotation
+            const transform = el.style.transform;
+            const match = transform.match(/rotate\((\d+)deg\)/);
+            document.getElementById('rotation-slider').value = match ? match[1] : 0;
+
+            // Bordure
+            document.getElementById('border-width-slider').value = parseInt(el.style.borderWidth) || 0;
+        }
+
+        function updateRotation(v) {
+            if (selectedElement) selectedElement.style.transform = `rotate(${v}deg)`;
+        }
+
+        function updateShadow() {
+            if (!selectedElement) return;
+            const color = document.getElementById('shadow-color').value;
+            const blur = document.getElementById('shadow-blur').value + 'px';
+            const x = document.getElementById('shadow-x').value + 'px';
+            const y = document.getElementById('shadow-y').value + 'px';
+
+            const shadowValue = `${x} ${y} ${blur} ${color}`;
+            if (selectedElement.classList.contains('text-obj')) {
+                selectedElement.style.textShadow = shadowValue;
+            } else {
+                selectedElement.style.boxShadow = shadowValue;
+            }
+        }
+
+        function addResizers(el) {
+            const positions = ['nw', 'ne', 'sw', 'se', 'n', 's', 'e', 'w'];
+            positions.forEach(pos => {
+                const resizer = document.createElement('div');
+                resizer.className = `resizer ${pos}`;
+                el.appendChild(resizer);
+                makeResizable(el, resizer, pos);
+            });
+        }
+
+        function removeResizers(el) {
+            const resizers = el.querySelectorAll('.resizer');
+            resizers.forEach(r => r.remove());
+        }
+
+        function makeResizable(el, resizer, pos) {
+            resizer.addEventListener('mousedown', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                const startX = e.clientX;
+                const startY = e.clientY;
+                const startWidth = el.offsetWidth;
+                const startHeight = el.offsetHeight;
+                const startTop = el.offsetTop;
+                const startLeft = el.offsetLeft;
+                const startFontSize = parseFloat(window.getComputedStyle(el).fontSize);
+
+                function onMouseMove(e) {
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+
+                    if (pos.includes('e')) el.style.width = (startWidth + dx) + 'px';
+                    if (pos.includes('w')) {
+                        el.style.width = (startWidth - dx) + 'px';
+                        el.style.left = (startLeft + dx) + 'px';
+                    }
+                    if (pos.includes('s')) el.style.height = (startHeight + dy) + 'px';
+                    if (pos.includes('n')) {
+                        el.style.height = (startHeight - dy) + 'px';
+                        el.style.top = (startTop + dy) + 'px';
+                    }
+
+                    // Si c'est une image à l'intérieur, on ajuste sa taille
+                    const img = el.querySelector('img');
+                    if (img) {
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                    }
+
+                    // Si c'est du texte, on adapte la taille de la police proportionnellement (optionnel)
+                    if (el.classList.contains('text-obj')) {
+                        const scale = Math.max(el.offsetWidth / startWidth, el.offsetHeight / startHeight);
+                        el.style.fontSize = (startFontSize * scale) + 'px';
+                    }
+                }
+
+                function onMouseUp() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                }
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+        }
+
+        function updateSize(v) {
+            if (!selectedElement) return;
+            if (selectedElement.classList.contains('text-obj')) {
+                selectedElement.style.fontSize = v + 'px';
+            } else if (selectedElement.querySelector('img')) {
+                selectedElement.querySelector('img').style.width = v + 'px';
+            } else {
+                selectedElement.style.width = v + 'px';
+                selectedElement.style.height = v + 'px';
+            }
+        }
+
+        function updateStyle(p, v) { if (selectedElement) selectedElement.style[p] = v; }
+        function deleteSelected() { if (selectedElement) { selectedElement.remove(); document.getElementById('properties-panel').style.display = 'none'; } }
+
+        // DRAG & DROP HYBRIDE (Tactile + Souris)
+        function makeDraggable(el) {
+            let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
+
+            const onStart = (e) => {
+                // SI TEXTE : Autorise le clic pour écrire si déjà sélectionné
+                if (el.classList.contains('text-obj') && selectedElement === el) return;
+
+                const cx = e.clientX || e.touches[0].clientX;
+                const cy = e.clientY || e.touches[0].clientY;
+                p3 = cx; p4 = cy;
+
+                document.onmousemove = document.ontouchmove = onMove;
+                document.onmouseup = document.ontouchend = onEnd;
+
+                if (e.type === 'mousedown') e.preventDefault();
+                selectElement(el);
+            };
+
+            const onMove = (e) => {
+                const cx = e.clientX || e.touches[0].clientX;
+                const cy = e.clientY || e.touches[0].clientY;
+                p1 = p3 - cx; p2 = p4 - cy;
+                p3 = cx; p4 = cy;
+                el.style.top = (el.offsetTop - p2) + "px";
+                el.style.left = (el.offsetLeft - p1) + "px";
+            };
+
+            const onEnd = () => {
+                document.onmousemove = document.ontouchmove = null;
+                document.onmouseup = document.ontouchend = null;
+            };
+
+            el.onmousedown = onStart;
+            el.ontouchstart = onStart;
+        }
+
+        canvas.onmousedown = () => {
+            if (selectedElement) selectedElement.classList.remove('selected');
+            selectedElement = null;
+            document.getElementById('properties-panel').style.display = 'none';
+        };
+    </script>
+</body>
+
+</html>

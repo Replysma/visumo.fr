@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Mon Site</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Studio - Minimalist Edition</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTÈME APPLE NÉON --- */
+        :root {
+            --apple-black: #000000;
+            --apple-dark-gray: #1c1c1e;
+            --neon-red: #ffffff;
+            /* Rouge vif Apple */
+            --glass: rgba(28, 28, 30, 0.7);
+            --border-light: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--apple-black);
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: -1px;
+            font-size: 24px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* Conteneur principal style "Floating Glass" */
+        .editor-container {
+            display: flex;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 100px 100px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* Barre d'outils ultra-minimaliste */
+        .toolbar {
+            width: 500px;
+            /* Plus étroit pour être plus sobre */
+            padding: 50px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 100px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 28px;
+        }
+
+        /* Boutons de commande style Apple */
+        .btn-action {
+            width: 50px;
+            height: 50px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.15, 0, 0.15, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        /* Animation Néon Sobre au survol */
+        .btn-action:hover {
+            color: rgb(255, 255, 255);
+            background: rgba(219, 216, 216, 0.356);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .canvas-area {
+            flex-grow: 1;
+            /* Force la zone de dessin à prendre tout l'espace restant */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000;
+            border-radius: 40px;
+        }
+
+        /* Sélecteur de couleur discret */
+        .color-well {
+            width: 50px;
+            height: 50px;
+            border-radius: 60%;
+            border: 2px solid hsl(0, 100%, 50%);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .color-well:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="color"] {
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn-export {
+            background: white;
+            color: black;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-weight: 600;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .btn-export:hover {
+            opacity: 0.8;
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <a href="pro.html" class="pro-button">
+        <img src="pro-removebg-preview.png" alt="Passer à la version Pro">
+    </a>
+
+    <h1>Ovia <span>•</span></h1>
+
+    <div class="editor-container">
+        <div class="toolbar">
+            <button class="btn-action" onclick="addRectangle()">Rect</button>
+            <button class="btn-action" onclick="addCircle()">Circ</button>
+            <button class="btn-action" onclick="addText()">Txt</button>
+
+            <div style="flex-grow: 1;"></div>
+            <div class="color-well" id="colorDisplay" style="background-color: #ff3b30;">
+                <input type="color" id="colorPicker" value="#ff3b30">
+            </div>
+
+            <button class="btn-action" style="color: #ff453a;" onclick="deleteSelected()">✕</button>
+        </div>
+
+        <div class="canvas-area">
+            <canvas id="c"></canvas>
+        </div>
+    </div>
+
+    <button class="btn-export" onclick="downloadImage()">Exporter le design</button>
+
+    <script>
+        // Configuration du Canvas
+        const canvas = new fabric.Canvas('c', {
+            width: 700,
+            height: 700,
+            backgroundColor: '#0a0a0a',
+            selectionColor: 'rgba(255, 255, 255, 0.0)',
+            selectionBorderColor: '#FFFFFF',
+            selectionLineWidth: 1
+        });
+
+        // Style des poignées de sélection (Apple-style)
+        fabric.Object.prototype.set({
+            transparentCorners: true,
+            cornerColor: '#ffffff',
+            cornerStrokeColor: '#ff3b30',
+            borderColor: '#FFFFFF',
+            cornerSize: 23,
+            cornerStyle: 'circle',
+            borderDashArray: [3, 3]
+        });
+
+        function addRectangle() {
+            const rect = new fabric.Rect({
+                left: 100, top: 100, fill: '#ff3b30', width: 80, height: 80,
+                rx: 15, ry: 15 // Bords arrondis style iOS
+            });
+            canvas.add(rect);
+            canvas.setActiveObject(rect);
+        }
+
+        function addCircle() {
+            const circle = new fabric.Circle({
+                left: 200, top: 150, fill: 'transparent', radius: 40,
+                stroke: '#ffffff', strokeWidth: 2
+            });
+            canvas.add(circle);
+            canvas.setActiveObject(circle);
+        }
+
+        function addText() {
+            const text = new fabric.IText('Minimal', {
+                left: 250, top: 200, fontFamily: 'Inter', fill: '#ffffff',
+                fontSize: 32, fontWeight: 300
+            });
+            canvas.add(text);
+            canvas.setActiveObject(text);
+        }
+
+        function deleteSelected() {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject) {
+                canvas.remove(activeObject);
+                canvas.discardActiveObject();
+                canvas.renderAll();
+            }
+        }
+
+        // Mise à jour de la couleur
+        const colorPicker = document.getElementById('colorPicker');
+        const colorDisplay = document.getElementById('colorDisplay');
+
+        colorPicker.addEventListener('input', function (e) {
+            const color = e.target.value;
+            colorDisplay.style.backgroundColor = color;
+            const activeObject = canvas.getActiveObject();
+            if (activeObject) {
+                activeObject.set('fill', color);
+                canvas.renderAll();
+            }
+        });
+
+        function downloadImage() {
+            canvas.discardActiveObject();
+            canvas.renderAll();
+            const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = 'apple-neon-design.png';
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
